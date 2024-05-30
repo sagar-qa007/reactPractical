@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: My API
+  description: An API for managing documents
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /documents:
+    get:
+      summary: Retrieve all documents
+      responses:
+        '200':
+          description: A list of documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+    post:
+      summary: Add a new document
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentInput'
+      responses:
+        '200':
+          description: Document added successfully
+        '400':
+          description: Bad request
+    delete:
+      summary: Delete a document by ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+      responses:
+        '200':
+          description: Document deleted successfully
+        '400':
+          description: Bad request
+  /documents/position:
+    put:
+      summary: Update document position by ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                position:
+                  type: integer
+      responses:
+        '200':
+          description: Document position updated successfully
+        '400':
+          description: Bad request
+components:
+  schemas:
+    Document:
+      type: object
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        title:
+          type: string
+        position:
+          type: integer
+    DocumentInput:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        position:
+          type: integer
+      required:
+        - type
+        - title
+        - position
